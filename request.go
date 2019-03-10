@@ -18,6 +18,21 @@ type request struct {
 	fullUrl  string
 }
 
+type BabelSenseRequest struct {
+	Lemma      string
+	SearchLang string
+}
+
+func (babelReq *BabelSenseRequest) SetLemma(lemma string) *BabelSenseRequest {
+	babelReq.Lemma = lemma
+	return babelReq
+}
+
+func (babelReq *BabelSenseRequest) SetSearchLang(lang string) *BabelSenseRequest {
+	babelReq.SearchLang = lang
+	return babelReq
+}
+
 // setParam set param with key/value to query string
 func (r *request) setParam(key string, value interface{}) *request {
 	if r.query == nil {
@@ -115,4 +130,30 @@ type SynSetInfoResponse struct {
 	} `json:"lnToOtherForm"`
 	FilterLangs  []string `json:"filterLangs"`
 	BkeyConcepts bool     `json:"bkeyConcepts"`
+}
+
+type BabelSenseResponse struct {
+	Type       string `json:"type"`
+	Properties struct {
+		FullLemma   string `json:"fullLemma"`
+		SimpleLemma string `json:"simpleLemma"`
+		Source      string `json:"source"`
+		SenseKey    string `json:"senseKey"`
+		Frequency   int    `json:"frequency"`
+		Language    string `json:"language"`
+		Pos         string `json:"pos"`
+		SynsetID    struct {
+			ID     string `json:"id"`
+			Pos    string `json:"pos"`
+			Source string `json:"source"`
+		} `json:"synsetID"`
+		TranslationInfo string `json:"translationInfo"`
+		Pronunciations  struct {
+			Audios         []interface{} `json:"audios"`
+			Transcriptions []interface{} `json:"transcriptions"`
+		} `json:"pronunciations"`
+		YAGOURL   string `json:"YAGOURL"`
+		BKeySense bool   `json:"bKeySense"`
+		IDSense   int    `json:"idSense"`
+	} `json:"properties"`
 }

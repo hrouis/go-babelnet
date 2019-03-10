@@ -30,6 +30,25 @@ func NewClient(baseUrl string, key string) (client *Client) {
 	return
 }
 
+// https://babelnet.io/v5/getSenses?lemma={lemma}&searchLang={lang}&key={key}
+func (client *Client) GetSenses(babelReq *BabelSenseRequest) (resp []BabelSenseResponse) {
+	req := &request{
+		method:   "GET",
+		endpoint: "/v5/getSenses",
+	}
+	req.setParam(Lemma, babelReq.Lemma)
+	req.setParam(SearchLang, babelReq.SearchLang)
+	client.constructRequest(req)
+	request, err := http.NewRequest(req.method, req.fullUrl, req.body)
+	checkError(err)
+	fmt.Println(request)
+	response, err := client.httpClient.Do(request)
+	checkError(err)
+	data := client.parseResponse(response)
+	mapstructure.Decode(data, &resp)
+	return
+}
+
 func (client *Client) GetSynSet(synSetId string) (resp SynSetInfoResponse) {
 	req := &request{
 		method:   "GET",
