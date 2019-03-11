@@ -6,7 +6,7 @@ import (
 )
 
 func TestClient_GetVersion(t *testing.T) {
-	client := NewClient("https://babelnet.io", "PutYourKeyAPIHere")
+	client := NewClient("https://babelnet.io", "PutYourAPIKeyHere")
 	version := client.GetVersion()
 	fmt.Println(version)
 	ids := client.GetSynSetIds("apple", "EN")
@@ -22,4 +22,7 @@ func TestClient_GetVersion(t *testing.T) {
 	req2.SetId("trousers").SetSearchLang("EN").SetPos("NOUN").SetSource("WIKI")
 	response := client.GetBabelNetId(req2)
 	fmt.Println(response)
+
+	response2 := client.GetOutgoingEdges("bn:14792761n")
+	fmt.Println(response2)
 }

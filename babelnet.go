@@ -34,6 +34,24 @@ func NewClient(baseUrl string, key string) (client *Client) {
 	return
 }
 
+//https://babelnet.io/v5/getOutgoingEdges?id={synsetId}&key={key}
+func (client *Client) GetOutgoingEdges(synSetId string) (resp []BabelEdgeResponse) {
+	req := &request{
+		method:   "GET",
+		endpoint: "/v5/getOutgoingEdges",
+	}
+	req.setParam(SynSetId, synSetId)
+	client.constructRequest(req)
+	request, err := http.NewRequest(req.method, req.fullUrl, req.body)
+	checkError(err)
+	fmt.Println(request)
+	response, err := client.httpClient.Do(request)
+	checkError(err)
+	data := client.parseResponse(response)
+	mapstructure.Decode(data, &resp)
+	return
+}
+
 //https://babelnet.io/v5/getSynsetIdsFromResourceID?id={lemma}&searchLang={searchLang}&pos={pos}&source={source}&key={key}
 func (client *Client) GetBabelNetId(idRequest *BabelIdRequest) (resp []SynSetIdResponse) {
 	req := &request{

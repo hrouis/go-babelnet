@@ -210,3 +210,17 @@ type BabelSenseResponse struct {
 		IDSense   int    `json:"idSense"`
 	} `json:"properties"`
 }
+
+type BabelEdgeResponse struct {
+	Language string `json:"language"`
+	Pointer  struct {
+		FSymbol       string `json:"fSymbol"`
+		Name          string `json:"name"`
+		ShortName     string `json:"shortName"`
+		RelationGroup string `json:"relationGroup"`
+		IsAutomatic   bool   `json:"isAutomatic"`
+	} `json:"pointer"`
+	Target           string `json:"target"`
+	Weight           int    `json:"weight"`
+	NormalizedWeight int    `json:"normalizedWeight"`
+}
