@@ -13,6 +13,10 @@ const (
 	Lemma      = "lemma"
 	SearchLang = "searchLang"
 	SynSetId   = "id"
+	TargetLang = "targetLang"
+	Pos        = "pos"
+	Source     = "source"
+	WnVersion  = "wnVersion"
 )
 
 // client to connect to the babel REST api server.
@@ -27,6 +31,30 @@ func NewClient(baseUrl string, key string) (client *Client) {
 	client.key = key
 	client.baseUrl = baseUrl
 	client.httpClient = http.DefaultClient
+	return
+}
+
+//https://babelnet.io/v5/getSynsetIdsFromResourceID?id={lemma}&searchLang={searchLang}&pos={pos}&source={source}&key={key}
+func (client *Client) GetBabelNetId(idRequest *BabelIdRequest) (resp []SynSetIdResponse) {
+	req := &request{
+		method:   "GET",
+		endpoint: "/v5/getSynsetIdsFromResourceID",
+	}
+	req.setParam(SynSetId, idRequest.Id)
+	req.setParam(SearchLang, idRequest.SearchLang)
+	req.setParam(TargetLang, idRequest.TargetLang)
+	req.setParam(Source, idRequest.Source)
+	req.setParam(Pos, idRequest.Pos)
+	req.setParam(Source, idRequest.Source)
+	req.setParam(WnVersion, idRequest.WnVersion)
+	client.constructRequest(req)
+	request, err := http.NewRequest(req.method, req.fullUrl, req.body)
+	checkError(err)
+	fmt.Println(request)
+	response, err := client.httpClient.Do(request)
+	checkError(err)
+	data := client.parseResponse(response)
+	mapstructure.Decode(data, &resp)
 	return
 }
 
@@ -69,7 +97,7 @@ func (client *Client) GetSynSet(synSetId string) (resp SynSetInfoResponse) {
 /**
  * Request template : https://babelnet.io/v5/getSynsetIds?lemma={lemma}&searchLang={searchLang}&key={key}
  */
-func (client *Client) GetSynSetIds(lemma string, lang string) (resp SynSetIdResponse) {
+func (client *Client) GetSynSetIds(lemma string, lang string) (resp []SynSetIdResponse) {
 	req := &request{
 		method:   "GET",
 		endpoint: "/v5/getSynsetIds",

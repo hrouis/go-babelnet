@@ -18,6 +18,9 @@ type request struct {
 	fullUrl  string
 }
 
+/************************************/
+/* Babel Sense Request and setters. */
+/************************************/
 type BabelSenseRequest struct {
 	Lemma      string
 	SearchLang string
@@ -32,6 +35,52 @@ func (babelReq *BabelSenseRequest) SetSearchLang(lang string) *BabelSenseRequest
 	babelReq.SearchLang = lang
 	return babelReq
 }
+
+/*********************************/
+/* Babel Id Request and setters. */
+/*********************************/
+type BabelIdRequest struct {
+	Id         string
+	SearchLang string // optional
+	TargetLang string // optional
+	Pos        string // optional
+	Source     string
+	WnVersion  string // optional
+}
+
+func (babelReq *BabelIdRequest) SetId(id string) *BabelIdRequest {
+	babelReq.Id = id
+	return babelReq
+}
+
+func (babelReq *BabelIdRequest) SetSearchLang(lang string) *BabelIdRequest {
+	babelReq.SearchLang = lang
+	return babelReq
+}
+
+func (babelReq *BabelIdRequest) SetTargetLang(lang string) *BabelIdRequest {
+	babelReq.TargetLang = lang
+	return babelReq
+}
+
+func (babelReq *BabelIdRequest) SetPos(pos string) *BabelIdRequest {
+	babelReq.Pos = pos
+	return babelReq
+}
+
+func (babelReq *BabelIdRequest) SetSource(source string) *BabelIdRequest {
+	babelReq.Source = source
+	return babelReq
+}
+
+func (babelReq *BabelIdRequest) SetWnVersion(wnVersion string) *BabelIdRequest {
+	babelReq.WnVersion = wnVersion
+	return babelReq
+}
+
+/**************************/
+/* Request params setter. */
+/**************************/
 
 // setParam set param with key/value to query string
 func (r *request) setParam(key string, value interface{}) *request {
@@ -50,11 +99,15 @@ func (r *request) setParams(m params) *request {
 	return r
 }
 
+/*****************************/
+/* API Response structures.  */
+/*****************************/
+
 type VersionResponse struct {
 	Version string `json:"version"`
 }
 
-type SynSetIdResponse []struct {
+type SynSetIdResponse struct {
 	ID     string `json:"id"`
 	Pos    string `json:"pos"`
 	Source string `json:"source"`
