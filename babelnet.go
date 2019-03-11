@@ -131,7 +131,6 @@ func (client *Client) GetSynSetIds(lemma string, lang string) (resp []SynSetIdRe
 	checkError(err)
 	data := client.parseResponse(response)
 	mapstructure.Decode(data, &resp)
-	fmt.Println("response is")
 	return
 }
 
@@ -181,11 +180,23 @@ func (client *Client) parseResponse(response *http.Response) (responseValue inte
 		fmt.Println(errorMessage)
 		panic(errorMessage)
 	}
-	fmt.Println(response)
 	data, err := ioutil.ReadAll(response.Body)
 	checkError(err)
 	defer response.Body.Close()
 	err = json.Unmarshal(data, &responseValue)
+	checkApiKeyValid(responseValue)
 	checkError(err)
 	return responseValue
+}
+
+/**
+  when api key is not valid or limit requests reached, API sends 200 OK although no concrete response.
+ */
+func checkApiKeyValid(responseValue interface{}) {
+	var message BabelErrorMessage
+	mapstructure.Decode(responseValue, &message)
+	fmt.Println(message)
+	if message.Message != "" {
+		panic(message.Message)
+	}
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func TestClient_GetVersion(t *testing.T) {
-	client := NewClient("https://babelnet.io", "PutYourAPIKeyHere")
+	client := NewClient("https://babelnet.io", "YourAPIKeyHere")
 	version := client.GetVersion()
 	fmt.Println(version)
 	ids := client.GetSynSetIds("apple", "EN")

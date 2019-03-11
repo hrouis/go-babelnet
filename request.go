@@ -224,3 +224,7 @@ type BabelEdgeResponse struct {
 	Weight           int    `json:"weight"`
 	NormalizedWeight int    `json:"normalizedWeight"`
 }
+
+type BabelErrorMessage struct {
+	Message string `json:"message"`
+}
