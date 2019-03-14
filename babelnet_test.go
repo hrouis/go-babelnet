@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var client = NewClient("https://babelnet.io", "40590341-692c-4b9d-beb7-1901e4e6e985")
+var client = NewClient("https://babelnet.io", "Your API Key Here")
 
 func TestClient_GetVersion(t *testing.T) {
 	version := client.GetVersion()
